@@ -113,7 +113,7 @@
     <scmpublish.content>target/staging/${project.artifactId}</scmpublish.content>
     <project.build.outputTimestamp>2023-09-20T14:07:14Z</project.build.outputTimestamp>
     <scmpublish.content>target/staging/${project.artifactId}</scmpublish.content>
-    <gpg.signing.profiles>run-its,mojorelease,release,IBgpgsigning</gpg.signing.profiles>
+    <gpg.signing.profiles>run-its,release,IBgpgsigning</gpg.signing.profiles>
     <maven.release.plugin.version>3.0.1</maven.release.plugin.version>
     <maven.nexus.staging.plugin.version>1.6.13</maven.nexus.staging.plugin.version>
     <maven.nexus.staging.plugin.skipStaging>false</maven.nexus.staging.plugin.skipStaging>
