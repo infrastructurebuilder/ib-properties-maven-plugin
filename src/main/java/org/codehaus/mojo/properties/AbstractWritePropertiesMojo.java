@@ -26,6 +26,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringReader;
 import java.io.StringWriter;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -41,11 +42,49 @@ import org.apache.maven.project.MavenProject;
  */
 public abstract class AbstractWritePropertiesMojo extends AbstractMojo {
 
+    /**
+     * Default encoding for the output file. Package private for testing.
+     */
+    static final String DEFAULT_ENCODING = "ISO-8859-1";
+
     @Parameter(defaultValue = "${project}", required = true, readonly = true)
     private MavenProject project;
 
     @Parameter(required = true, property = "properties.outputFile")
     private File outputFile;
+
+    /**
+     * The encoding to use when writing the properties file.
+     */
+    @Parameter(required = false, defaultValue = DEFAULT_ENCODING)
+    private String encoding = DEFAULT_ENCODING;
+
+    /**
+     * Default scope for test access.
+     *
+     * @param project The test project.
+     */
+    void setProject(MavenProject project) {
+        this.project = project;
+    }
+
+    /**
+     * Default scope for test access.
+     *
+     * @param encoding to write the output file in
+     */
+    void setEncoding(String encoding) {
+        this.encoding = encoding;
+    }
+
+    /**
+     * Default scope for test access
+     *
+     * @param outputFile the outputFile to set
+     */
+    void setOutputFile(File outputFile) {
+        this.outputFile = outputFile;
+    }
 
     /**
      * @param properties {@link Properties}
@@ -66,7 +105,7 @@ public abstract class AbstractWritePropertiesMojo extends AbstractMojo {
 
     // https://github.com/apache/maven-archiver/blob/master/src/main/java/org/apache/maven/archiver/PomPropertiesUtil.java#L81
     private void storeWithoutTimestamp(Properties properties, File outputFile, String comments) throws IOException {
-        try (PrintWriter pw = new PrintWriter(outputFile, "ISO-8859-1");
+        try (PrintWriter pw = new PrintWriter(outputFile, this.encoding);
                 StringWriter sw = new StringWriter()) {
             properties.store(sw, comments);
             comments = '#' + comments;
@@ -98,6 +137,16 @@ public abstract class AbstractWritePropertiesMojo extends AbstractMojo {
         // ensure path exists
         if (outputFile.getParentFile() != null) {
             outputFile.getParentFile().mkdirs();
+        }
+    }
+    /**
+     * @throws MojoExecutionException {@link MojoExecutionException}
+     */
+    protected void validateEncoding() throws MojoExecutionException {
+        try {
+            Charset.forName(this.encoding);
+        } catch (IllegalArgumentException e) {
+            throw new MojoExecutionException(String.format("Invalid encoding '%s'", this.encoding), e);
         }
     }
 

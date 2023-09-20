@@ -27,14 +27,24 @@
     <version>76</version>
   </parent>
 
+  <groupId>org.infrastructurebuilder.maven</groupId>
+
   <artifactId>properties-maven-plugin</artifactId>
-  <version>1.2.1-SNAPSHOT</version>
+  <version>1.2.1.0-ib-SNAPSHOT</version>
 
   <packaging>maven-plugin</packaging>
 
   <name>Properties Maven Plugin</name>
-  <description>The Properties Maven Plugin is here to make life a little easier when dealing
-    with properties. It provides goals to read and write properties from files.</description>
+  <description>The Properties Maven Plugin is here to make life a little easier
+    when dealing
+    with properties. It provides goals to read and write properties from files.
+    This was forked from the original properties-maven-plugin to fix issue
+    mojohaus/properties-maven-plugin#30.
+
+    For RELEASED IB Versions prior to 1.2.0.1, see [the original forked
+    repo](https://github.com/infrastructurebuilder/archived-properties-maven-plugin)
+    Note that the IB version might be released ahead or behind the mojohaus
+    version.</description>
 
   <url>https://www.mojohaus.org/properties-maven-plugin</url>
 
@@ -65,28 +75,48 @@
       <name>Tim Gordon</name>
       <email>timothygordon32@gmail.com</email>
     </developer>
+    <developer>
+      <id>mykelalvis</id>
+      <name>Mykel Alvis</name>
+      <email>mykel.alvis@gmail.com</email>
+    </developer>
   </developers>
 
   <scm>
-    <connection>scm:git:https://github.com/mojohaus/properties-maven-plugin.git</connection>
-    <developerConnection>scm:git:ssh://git@github.com/mojohaus/properties-maven-plugin.git</developerConnection>
-    <tag>master</tag>
-    <url>https://github.com/mojohaus/properties-maven-plugin/tree/master</url>
+    <connection>scm:git:https://github.com/infrastructurebuilder/properties-maven-plugin.git</connection>
+    <developerConnection>scm:git:ssh://git@github.com/infrastructurebuilder/properties-maven-plugin.git</developerConnection>
+    <tag>HEAD</tag>
+    <url>https://github.com/infrastructurebuilder/properties-maven-plugin</url>
   </scm>
   <issueManagement>
     <system>GitHub</system>
-    <url>https://github.com/mojohaus/properties-maven-plugin/issues/</url>
+    <url>https://github.com/infrastructurebuilder/properties-maven-plugin/issues/</url>
   </issueManagement>
   <ciManagement>
-    <system>GitHub</system>
-    <url>https://github.com/mojohaus/properties-maven-plugin/actions/</url>
+    <system>Travis-CI</system>
+    <url>https://travis-ci.org/infrastructurebuilder/properties-maven-plugin</url>
   </ciManagement>
+  <distributionManagement>
+    <repository>
+      <id>ossrh</id>
+      <url>https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+    </repository>
+    <snapshotRepository>
+      <id>ossrh</id>
+      <url>https://s01.oss.sonatype.org/content/repositories/snapshots</url>
+    </snapshotRepository>
+  </distributionManagement>
 
   <properties>
-    <mavenVersion>3.5.4</mavenVersion>
+    <mavenVersion>3.9.4</mavenVersion>
     <recommendedJavaBuildVersion>11</recommendedJavaBuildVersion>
     <scmpublish.content>target/staging/${project.artifactId}</scmpublish.content>
     <project.build.outputTimestamp>2023-07-27T21:53:50Z</project.build.outputTimestamp>
+    <scmpublish.content>target/staging/${project.artifactId}</scmpublish.content>
+    <gpg.signing.profiles>run-its,mojorelease,release,IBgpgsigning</gpg.signing.profiles>
+    <maven.release.plugin.version>3.0.1</maven.release.plugin.version>
+    <maven.nexus.staging.plugin.version>1.6.13</maven.nexus.staging.plugin.version>
+    <maven.nexus.staging.plugin.skipStaging>false</maven.nexus.staging.plugin.skipStaging>
   </properties>
 
   <dependencies>
@@ -124,8 +154,69 @@
       <artifactId>maven-plugin-annotations</artifactId>
       <scope>provided</scope>
     </dependency>
+    <dependency>
+      <groupId>org.codehaus.plexus</groupId>
+      <artifactId>plexus-sec-dispatcher</artifactId>
+      <version>2.0</version>
+    </dependency>
+    <dependency>
+      <groupId>org.json</groupId>
+      <artifactId>json</artifactId>
+      <version>20230618</version>
+    </dependency>
+    <dependency>
+      <groupId>com.github.wnameless.json</groupId>
+      <artifactId>json-flattener</artifactId>
+      <version>0.16.6</version>
+    </dependency>
+    <dependency>
+      <groupId>com.amazonaws</groupId>
+      <artifactId>aws-java-sdk</artifactId>
+      <version>1.12.553</version>
+    </dependency>
+    <dependency>
+      <groupId>org.tomlj</groupId>
+      <artifactId>tomlj</artifactId>
+      <version>1.1.0</version>
+    </dependency>
+
   </dependencies>
 
+  <build>
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <groupId>org.sonatype.plugins</groupId>
+          <artifactId>nexus-staging-maven-plugin</artifactId>
+          <version>${maven.nexus.staging.plugin.version}</version>
+          <configuration>
+            <skipStaging>${maven.nexus.staging.plugin.skipStaging}</skipStaging>
+            <serverId>ossrh</serverId>
+            <nexusUrl>https://s01.oss.sonatype.org/</nexusUrl>
+            <autoReleaseAfterClose>true</autoReleaseAfterClose>
+          </configuration>
+        </plugin>
+      </plugins>
+    </pluginManagement>
+    <plugins>
+      <plugin>
+        <artifactId>maven-release-plugin</artifactId>
+        <inherited>false</inherited>
+        <configuration>
+          <autoVersionSubmodules>true</autoVersionSubmodules>
+          <releaseProfiles>${gpg.signing.profiles}</releaseProfiles>
+          <goals>deploy</goals>
+          <arguments>""</arguments>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.sonatype.plugins</groupId>
+        <artifactId>nexus-staging-maven-plugin</artifactId>
+        <extensions>true</extensions>
+      </plugin>
+
+    </plugins>
+  </build>
   <profiles>
     <profile>
       <id>run-its</id>

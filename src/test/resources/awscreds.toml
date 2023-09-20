@@ -1,0 +1,7 @@
+# This is NOT a TOML document by default
+
+
+[name.name1]
+aws_access_key_id = ACCESS
+aws_secret_access_key = SECRET
+region = us-east-1
