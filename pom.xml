@@ -276,5 +276,55 @@
         </plugins>
       </build>
     </profile>
+    <profile>
+      <id>release</id>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-javadoc-plugin</artifactId>
+            <configuration>
+              <additionalJOption>-Xdoclint:none</additionalJOption>
+              <detectJavaApiLink>false</detectJavaApiLink>
+
+            </configuration>
+            <executions>
+              <execution>
+                <id>check-javadoc</id>
+                <goals>
+                  <goal>javadoc-no-fork</goal>
+                  <goal>test-javadoc-no-fork</goal>
+                </goals>
+                <phase>verify</phase>
+                <configuration>
+                  <quiet>true</quiet>
+                  <show>private</show>
+                </configuration>
+              </execution>
+              <execution>
+                <id>attach-javadocs</id>
+                <goals>
+                  <goal>jar</goal>
+                  <goal>test-jar</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-gpg-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>sign-artifacts</id>
+                <goals>
+                  <goal>sign</goal>
+                </goals>
+                <phase>verify</phase>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
   </profiles>
 </project>
