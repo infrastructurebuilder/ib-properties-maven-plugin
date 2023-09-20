@@ -83,18 +83,18 @@
   </developers>
 
   <scm>
-    <connection>scm:git:https://github.com/infrastructurebuilder/properties-maven-plugin.git</connection>
-    <developerConnection>scm:git:ssh://git@github.com/infrastructurebuilder/properties-maven-plugin.git</developerConnection>
+    <connection>scm:git:https://github.com/infrastructurebuilder/ib-properties-maven-plugin.git</connection>
+    <developerConnection>scm:git:ssh://git@github.com/infrastructurebuilder/ib-properties-maven-plugin.git</developerConnection>
     <tag>HEAD</tag>
-    <url>https://github.com/infrastructurebuilder/properties-maven-plugin</url>
+    <url>https://github.com/infrastructurebuilder/ib-roperties-maven-plugin</url>
   </scm>
   <issueManagement>
     <system>GitHub</system>
-    <url>https://github.com/infrastructurebuilder/properties-maven-plugin/issues/</url>
+    <url>https://github.com/infrastructurebuilder/ib-roperties-maven-plugin/issues/</url>
   </issueManagement>
   <ciManagement>
     <system>Travis-CI</system>
-    <url>https://travis-ci.org/infrastructurebuilder/properties-maven-plugin</url>
+    <url>https://travis-ci.org/infrastructurebuilder/ib-roperties-maven-plugin</url>
   </ciManagement>
   <distributionManagement>
     <repository>
