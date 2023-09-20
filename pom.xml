@@ -207,6 +207,7 @@
           <releaseProfiles>${gpg.signing.profiles}</releaseProfiles>
           <goals>deploy</goals>
           <arguments>""</arguments>
+          <tagNameFormat>@{project.artifactId}-@{project.version}</tagNameFormat>
         </configuration>
       </plugin>
       <plugin>
