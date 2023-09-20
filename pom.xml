@@ -30,7 +30,7 @@
   <groupId>org.infrastructurebuilder.maven</groupId>
 
   <artifactId>properties-maven-plugin</artifactId>
-  <version>1.2.1.1-ib-SNAPSHOT</version>
+  <version>1.2.1.0-ib-SNAPSHOT</version>
 
   <packaging>maven-plugin</packaging>
 
@@ -111,7 +111,7 @@
     <mavenVersion>3.9.4</mavenVersion>
     <recommendedJavaBuildVersion>11</recommendedJavaBuildVersion>
     <scmpublish.content>target/staging/${project.artifactId}</scmpublish.content>
-    <project.build.outputTimestamp>2023-09-20T13:47:11Z</project.build.outputTimestamp>
+    <project.build.outputTimestamp>2023-07-27T21:53:50Z</project.build.outputTimestamp>
     <scmpublish.content>target/staging/${project.artifactId}</scmpublish.content>
     <gpg.signing.profiles>run-its,mojorelease,release,IBgpgsigning</gpg.signing.profiles>
     <maven.release.plugin.version>3.0.1</maven.release.plugin.version>
