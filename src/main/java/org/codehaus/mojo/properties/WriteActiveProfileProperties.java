@@ -37,6 +37,7 @@ public class WriteActiveProfileProperties extends AbstractWritePropertiesMojo {
     /** {@inheritDoc} */
     public void execute() throws MojoExecutionException {
         validateOutputFile();
+        validateEncoding();
         List<Profile> list = getProject().getActiveProfiles();
         if (getLog().isInfoEnabled()) {
             getLog().debug(list.size() + " profile(s) active");
